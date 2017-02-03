@@ -15,14 +15,14 @@ $ npm install exceldate
 Check it out:
 ```js
 const exceldate = require('exceldate');
-exceldate('1'); // 1899-12-31T00:00:00.000Z
-exceldate(4242.4242); // 1911-08-12T10:10:50.880Z
-exceldate('foo'); // null
+console.log(exceldate('1')); // 1899-12-31T00:00:00.000Z 
+console.log(exceldate(4242.4242)); // 1911-08-12T10:10:50.880Z 
+console.log(exceldate('foo')); // null 
 ```
 
 ## Testing
 
-If you'd like to run the tests, clone or download the repo and run `npm test`
+If you'd like to test, clone or download the repo and run `npm test`, which will run the tests and generate a coverage report.
 
 
 ## License
