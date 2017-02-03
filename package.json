@@ -3,11 +3,12 @@
   "description": "Node.js module to convert excel timestamps to JS dates.",
   "author": "Floyd Noel",
   "license": "Unlicense",
+  "main": "index",
   "repository": {
     "type": "git",
     "url": "https://github.com/floydnoel/exceldate"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
