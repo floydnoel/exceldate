@@ -20,6 +20,10 @@ exceldate(4242.4242); // 1911-08-12T10:10:50.880Z
 exceldate('foo'); // null
 ```
 
+## Testing
+
+If you'd like to run the tests, clone or download the repo and run `npm test`
+
 
 ## License
 
