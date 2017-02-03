@@ -17,6 +17,7 @@ Check it out:
 const exceldate = require('exceldate');
 exceldate('1'); // 1899-12-31T00:00:00.000Z
 exceldate(4242.4242); // 1911-08-12T10:10:50.880Z
+exceldate('foo'); // null
 ```
 
 
