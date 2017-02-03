@@ -1,0 +1,12 @@
+{
+  "name": "exceldate",
+  "version": "0.0.1",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "istanbul cover _mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")"
+  }
+}
