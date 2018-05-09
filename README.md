@@ -47,4 +47,4 @@ For more information, please refer to the LICENSE file and <https://unlicense.or
 ## Changelog:
 - 0.0.3 First stable version
 - 1.0.0 support callback style interface, remove semicolons, updated test framework, updated README
-- 1.0.1 remove errant comment
+- 1.0.1 remove old code comment
