@@ -35,7 +35,7 @@ Prerequisites:
 - install Jest e.g. `npm i -g jest`
 - navigate to the repo
 
-Then just run `npm test` or `jest`
+Then run `yarn test` or `npm test`
 
 
 ## License
@@ -48,3 +48,4 @@ For more information, please refer to the LICENSE file and <https://unlicense.or
 - 0.0.3 First stable version
 - 1.0.0 support callback style interface, remove semicolons, updated test framework, updated README
 - 1.0.1 remove old code comment
+- 1.0.2 update README
