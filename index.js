@@ -31,7 +31,6 @@ module.exports = (excelTimestamp, callback) => {
         const parsed = excelTimestampAsUnixTimestamp + delta
         const javascriptDate = new Date(parsed)
 
-        // return new Date(parsed)
         return callback(null, javascriptDate)
       }
     } catch (e) {
