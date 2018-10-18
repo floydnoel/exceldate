@@ -10,6 +10,11 @@
   },
   "version": "1.0.2",
   "scripts": {
+    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"{index.js,index.spec.js,playground.js}\"",
     "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "prettier": "^1.14.3"
   }
 }
