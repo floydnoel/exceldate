@@ -1,6 +1,7 @@
 {
   "name": "exceldate",
-  "description": "Node.js module to convert excel timestamps to JS dates.",
+  "version": "2.0.0",
+  "description": "Node.js module to convert between excel timestamps and JS dates.",
   "author": "Floyd Noel",
   "license": "Unlicense",
   "main": "index",
@@ -8,7 +9,6 @@
     "type": "git",
     "url": "https://github.com/floydnoel/exceldate"
   },
-  "version": "1.0.2",
   "scripts": {
     "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"{index.js,index.spec.js,playground.js}\"",
     "test": "jest"
@@ -16,5 +16,8 @@
   "devDependencies": {
     "jest": "^23.6.0",
     "prettier": "^1.14.3"
+  },
+  "engines": {
+    "node": ">8.0"
   }
 }
