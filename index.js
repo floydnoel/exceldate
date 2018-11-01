@@ -3,7 +3,7 @@
  * @module exceldate
  */
 
-const errorMessage = 'Bad input received, cannot convert'
+const errMsg = 'Bad input received, cannot convert'
 const promisify = require('util').promisify
 
 /**
@@ -31,18 +31,17 @@ const from = (excelDate, done) => {
 
   // Check if the input exists
   if (!excelDate && excelDate !== 0) {
-    return done(new Error(errorMessage))
+    return done(new Error(errMsg))
   }
 
   try {
     // Check if the input is a parsable Number, base 10
     const parsedExcelDate = Number.parseFloat(excelDate, 10)
     if (Number.isNaN(parsedExcelDate)) {
-      return done(new Error(errorMessage))
+      return done(new Error(errMsg))
     } else {
       // The input is indeed a parsable number, proceed to conversion
-      // Algorithm details, cf. comments:
-      // https://gist.github.com/christopherscott/2782634
+      // For algorithm details see the README
       const secondsInDay = 24 * 60 * 60
       const excelEpoch = new Date(Date.UTC(1899, 11, 31))
       const excelEpochAsUnixTimestamp = excelEpoch.getTime()
@@ -51,9 +50,9 @@ const from = (excelDate, done) => {
       const excelTimestampAsUnixTimestamp =
         parsedExcelDate * secondsInDay * 1000
       const parsed = excelTimestampAsUnixTimestamp + delta
-      const javascriptDate = new Date(parsed)
+      const jsDate = new Date(parsed)
 
-      return done(null, javascriptDate)
+      return done(null, jsDate)
     }
   } catch (e) {
     return done(e)
@@ -65,7 +64,7 @@ const to = (a, b) => 'a'
 module.exports = {
   from,
   to,
-  fromAsync: promisify(from),
-  toAsync: promisify(to),
-  errorMessage,
+  fromSync: promisify(from),
+  toSync: promisify(to),
+  errMsg,
 }
