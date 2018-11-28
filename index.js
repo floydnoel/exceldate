@@ -39,21 +39,21 @@ const from = (excelDate, done) => {
     const parsedExcelDate = Number.parseFloat(excelDate, 10)
     if (Number.isNaN(parsedExcelDate)) {
       return done(new Error(errMsg))
-    } else {
-      // The input is indeed a parsable number, proceed to conversion
-      // For algorithm details see the README
-      const secondsInDay = 24 * 60 * 60
-      const excelEpoch = new Date(Date.UTC(1899, 11, 31))
-      const excelEpochAsUnixTimestamp = excelEpoch.getTime()
-      const missingLeapYearDay = secondsInDay * 1000
-      const delta = excelEpochAsUnixTimestamp - missingLeapYearDay
-      const excelTimestampAsUnixTimestamp =
-        parsedExcelDate * secondsInDay * 1000
-      const parsed = excelTimestampAsUnixTimestamp + delta
-      const jsDate = new Date(parsed)
-
-      return done(null, jsDate)
     }
+    
+    // The input is indeed a parsable number, proceed to conversion
+    // For algorithm details see the README
+    const secondsInDay = 24 * 60 * 60
+    const excelEpoch = new Date(Date.UTC(1899, 11, 31))
+    const excelEpochAsUnixTimestamp = excelEpoch.getTime()
+    const missingLeapYearDay = secondsInDay * 1000
+    const delta = excelEpochAsUnixTimestamp - missingLeapYearDay
+    const excelTimestampAsUnixTimestamp =
+      parsedExcelDate * secondsInDay * 1000
+    const parsed = excelTimestampAsUnixTimestamp + delta
+    const jsDate = new Date(parsed)
+
+    return done(null, jsDate)
   } catch (e) {
     return done(e)
   }
@@ -61,15 +61,12 @@ const from = (excelDate, done) => {
 
 /**
  * Convert to a spreadsheet-formatted date from a corresponding JS date object
- * @param {(number|string)} excelDate - An excel-formatted date number
+ * @param {date} jsDate - A javascript date object
  * @param {nodeCallback} [done] - A callback to use if desired
- * @returns {date}
+ * @returns {string}
  * @throws Will throw an error if the input is invalid
  */
 const to = (jsDate, done) => {
-  return 'foo'
-  
-  // ok...
   // Check for a callback. If none, create our own to return the results
   if (!done || typeof done !== 'function') {
     done = (err, res) => {
@@ -87,21 +84,18 @@ const to = (jsDate, done) => {
     // Check if the input is a JS Date
     if (!(jsDate instanceof Date)) {
       return done(new Error(errMsg))
-    } else {
-      // The input is indeed a JS Date
-      // For algorithm details see the README
-      const secondsInDay = 24 * 60 * 60
-      const excelEpoch = new Date(Date.UTC(1899, 11, 31))
-      const excelEpochAsUnixTimestamp = excelEpoch.getTime()
-      const missingLeapYearDay = secondsInDay * 1000
-      const delta = excelEpochAsUnixTimestamp - missingLeapYearDay
-      
-      const excelTimestampAsUnixTimestamp = jsDate.getTime() * secondsInDay * 1000
-      const parsed = excelTimestampAsUnixTimestamp + delta
-
-
-      return done(null, parsed)
     }
+
+    const secondsInDay = 24 * 60 * 60
+    const excelEpoch = new Date(Date.UTC(1899, 11, 31))
+    const excelEpochAsUnixTimestamp = excelEpoch.getTime()
+    const missingLeapYearDay = secondsInDay * 1000
+    const delta = excelEpochAsUnixTimestamp - missingLeapYearDay
+
+    const excelTimestampAsUnixTimestamp = jsDate.getTime() * secondsInDay * 1000
+    const parsed = excelTimestampAsUnixTimestamp + delta
+
+    return done(null, parsed)
   } catch (e) {
     return done(e)
   }
