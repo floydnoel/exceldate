@@ -1,14 +1,18 @@
-/**
- * Created by floyd noel on 1/30/17.
- */
 const assert = require('assert')
+const {
+  ArgTypeError,
+  CallbackError,
+} = require('./errors')
 const excelDate = require('./index')
-const { from, errMsg } = excelDate
+const { from, to } = excelDate
 
-describe('excelDate', () => {
+
+describe('from', () => {
   it('should return the correct date', () => {
     assert.equal(from(42510).toISOString(), '2016-05-20T00:00:00.000Z')
     assert.equal(from('42510').toISOString(), '2016-05-20T00:00:00.000Z')
+    assert.equal(from(0).toISOString(), '1899-12-30T00:00:00.000Z')
+    assert.equal(from('0').toISOString(), '1899-12-30T00:00:00.000Z')
     assert.equal(from(1).toISOString(), '1899-12-31T00:00:00.000Z')
     assert.equal(from('1').toISOString(), '1899-12-31T00:00:00.000Z')
     assert.equal(from(2).toISOString(), '1900-01-01T00:00:00.000Z')
@@ -25,6 +29,12 @@ describe('excelDate', () => {
     })
     from('42510', (err, res) => {
       assert.equal(res.toISOString(), '2016-05-20T00:00:00.000Z')
+    })
+    from(0, (err, res) => {
+      assert.equal(res.toISOString(), '1899-12-30T00:00:00.000Z')
+    })
+    from('0', (err, res) => {
+      assert.equal(res.toISOString(), '1899-12-30T00:00:00.000Z')
     })
     from(1, (err, res) => {
       assert.equal(res.toISOString(), '1899-12-31T00:00:00.000Z')
@@ -53,20 +63,92 @@ describe('excelDate', () => {
   })
 
   it('should throw errors for invalid inputs', () => {
-    expect(() => from('foo')).toThrow(errMsg)
-    expect(() => from(false)).toThrow(errMsg)
-    expect(() => from()).toThrow(errMsg)
+    expect(() => from('foo')).toThrow()
+    expect(() => from(false)).toThrow()
+    expect(() => from()).toThrow()
   })
 
-  it('should return errors for invalid inputs via callback', () => {
+  it('should return errors for invalid inputs via error parameter of a callback', () => {
     from('foo', (err, res) => {
       assert.equal(null, res)
-      assert.equal(err.toString(), `Error: ${errMsg}`)
+      assert.equal(err.toString(), new ArgTypeError().toString())
+    })
+
+    from(undefined, (err, res) => {
+      assert.equal(null, res)
+      assert.equal(err.toString(), new ArgTypeError().toString())
     })
 
     from(null, (err, res) => {
       assert.equal(null, res)
-      assert.equal(err.toString(), `Error: ${errMsg}`)
+      assert.equal(err.toString(), new ArgTypeError())
     })
+  })
+
+  it('should throw an invalid callback error for invalid callbacks', () => {
+    expect(() => from('foo', 'bar')).toThrow(new CallbackError())
+    expect(() => from(1, 2)).toThrow(new CallbackError())
+  })
+})
+
+
+
+describe('to', () => {
+  it('should return the correct date', () => {
+    assert.equal(to('2016-05-20T00:00:00.000Z'), '42510')
+    assert.equal(to('1899-12-30T00:00:00.000Z'), '0')
+    assert.equal(to('1899-12-31T00:00:00.000Z'), '1')
+    assert.equal(to('1900-01-01T00:00:00.000Z'), '2')
+    assert.equal(to('1911-08-12T10:10:50.880Z'), '4242.4242')
+    assert.equal(to('2017-01-03T05:25:49.607Z'), '42738.22626859954')
+  })
+
+  it('should return the correct date via callbacks', () => {
+    to('2016-05-20T00:00:00.000Z', (err, res) => {
+      assert.equal(res, '42510')
+    })
+    to('1899-12-30T00:00:00.000Z', (err, res) => {
+      assert.equal(res, '0')
+    })
+    to('1899-12-31T00:00:00.000Z', (err, res) => {
+      assert.equal(res, '1')
+    })
+    to('1900-01-01T00:00:00.000Z', (err, res) => {
+      assert.equal(res, '2')
+    })
+    to('1911-08-12T10:10:50.880Z', (err, res) => {
+      assert.equal(res, '4242.4242')
+    })
+    to('2017-01-03T05:25:49.607Z', (err, res) => {
+      assert.equal(res, '42738.22626859954')
+    })
+  })
+
+  it('should throw errors for invalid inputs', () => {
+    expect(() => to('foo')).toThrow()
+    expect(() => to(false)).toThrow()
+    expect(() => to()).toThrow()
+  })
+
+  it('should return errors for invalid inputs via error parameter of a callback', () => {
+    to('foo', (err, res) => {
+      assert.equal(null, res)
+      assert.equal(err.toString(), new ArgTypeError().toString())
+    })
+
+    to(undefined, (err, res) => {
+      assert.equal(null, res)
+      assert.equal(err.toString(), new ArgTypeError().toString())
+    })
+
+    to(null, (err, res) => {
+      assert.equal(null, res)
+      assert.equal(err.toString(), new ArgTypeError())
+    })
+  })
+
+  it('should throw an invalid callback error for invalid callbacks', () => {
+    expect(() => to('foo', 'bar')).toThrow(new CallbackError())
+    expect(() => to(1, 2)).toThrow(new CallbackError())
   })
 })
