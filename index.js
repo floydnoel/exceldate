@@ -8,18 +8,14 @@ const promisify = require('util').promisify
 // constants
 const numberOrNumberString = 'number or number string'
 const dateOrDateString = 'date or date string'
+const msInDay = 24 * 60 * 60 * 1000
 
-const secondsInDay = 24 * 60 * 60
-
-// calculation details:
 // start date of the spreadsheet epic
-const sheetEpoch = new Date(Date.UTC(1899, 11, 31))
-const sheetEpochTimestamp = sheetEpoch.getTime()
-// missingLeapYearDay is due to a bug in Excel.
-// todo: add link/more
 // this assumes to use the Google format for values <61? todo: recheck
-const missingLeapYearDay = secondsInDay * 1000
-const adjustedSheetEpicTimestamp = sheetEpochTimestamp - missingLeapYearDay
+const sheetEpochTimestamp = new Date('1899-12-30').getTime()
+// todo: add link/more
+// Excel thinks there's a leap year in 1900, but there isn't.
+// Also Excel doesn't allow negative values.
 
 
 /**
@@ -64,9 +60,9 @@ const from = (fromDate, done = defaultCallback) => {
       return done(new ArgTypeError(numberOrNumberString))
     }
 
-    const fromTimestamp = fromDateNumber * secondsInDay * 1000
-    const convertedTimestamp = fromTimestamp + adjustedSheetEpicTimestamp
-    const jsDate = new Date(convertedTimestamp)
+    const fromTimestamp = fromDateNumber * msInDay
+    const jsTimestamp = fromTimestamp + sheetEpochTimestamp
+    const jsDate = new Date(jsTimestamp)
 
     return done(null, jsDate)
   } catch (e) {
@@ -100,8 +96,8 @@ const to = (toDate, done = defaultCallback) => {
       throw new ArgTypeError(dateOrDateString)
     }
 
-    const convertedTimestamp = toTimestamp - adjustedSheetEpicTimestamp
-    const sheetDate = convertedTimestamp / secondsInDay / 1000
+    const sheetTimestamp = toTimestamp - sheetEpochTimestamp
+    const sheetDate = sheetTimestamp / msInDay
 
     return done(null, `${sheetDate}`)
   } catch (e) {
