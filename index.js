@@ -2,20 +2,32 @@
  * exceldate
  * @module exceldate
  */
-const {
-  ArgTypeError,
-  CallbackError,
-} = require('./errors')
+const { ArgTypeError, CallbackError } = require('./errors')
 const promisify = require('util').promisify
+
+// constants
+const numberOrNumberString = 'number or number string'
+const dateOrDateString = 'date or date string'
+
+const secondsInDay = 24 * 60 * 60
+
+// calculation details:
+// start date of the spreadsheet epic
+const sheetEpoch = new Date(Date.UTC(1899, 11, 31))
+const sheetEpochTimestamp = sheetEpoch.getTime()
+// missingLeapYearDay is due to a bug in Excel.
+// todo: add link/more
+// this assumes to use the Google format for values <61? todo: recheck
+const missingLeapYearDay = secondsInDay * 1000
+const adjustedSheetEpicTimestamp = sheetEpochTimestamp - missingLeapYearDay
 
 
 /**
-* Callback definition (standard Node-style error-first callback)
-* @callback nodeCallback
-* @param {(error|undefined)} err - An error if one is encountered, undefined otherwise
-* @param {*} res - The successful result if processed
-*/
-
+ * Callback definition (standard Node-style error-first callback)
+ * @callback nodeCallback
+ * @param {(error|undefined)} err - An error if one is encountered, undefined otherwise
+ * @param {*} res - The successful result if processed
+ */
 
 //todo: double check
 /**
@@ -35,7 +47,7 @@ const defaultCallback = (err, res) => {
  * @param {(number|string)} fromDate - A spreadsheet-formatted date number
  * @param {nodeCallback} [done] - Optional callback, allows async/promisify
  * @returns {date}
- * @throws Will throw an error if the input is invalid
+ * @throws Will throw an error if the input is invalid, or a bad callback is received
  */
 const from = (fromDate, done = defaultCallback) => {
   if (!done || typeof done !== 'function') {
@@ -43,24 +55,18 @@ const from = (fromDate, done = defaultCallback) => {
   }
 
   if (!fromDate && fromDate !== 0) {
-    return done(new ArgTypeError('number or number string'))
+    return done(new ArgTypeError(numberOrNumberString))
   }
 
   try {
-    const parsedExcelDate = Number.parseFloat(fromDate, 10)
-    if (Number.isNaN(parsedExcelDate)) {
-      return done(new ArgTypeError('number or number string'))
+    const fromDateNumber = Number.parseFloat(fromDate, 10)
+    if (Number.isNaN(fromDateNumber)) {
+      return done(new ArgTypeError(numberOrNumberString))
     }
 
-    const secondsInDay = 24 * 60 * 60
-    const excelEpoch = new Date(Date.UTC(1899, 11, 31))
-    const excelEpochAsUnixTs = excelEpoch.getTime()
-    const missingLeapYearDay = secondsInDay * 1000
-    const delta = excelEpochAsUnixTs - missingLeapYearDay // assumes Google format <60
-    const excelTsAsUnixTs =
-      parsedExcelDate * secondsInDay * 1000
-    const adjustedTs = excelTsAsUnixTs + delta
-    const jsDate = new Date(adjustedTs)
+    const fromTimestamp = fromDateNumber * secondsInDay * 1000
+    const convertedTimestamp = fromTimestamp + adjustedSheetEpicTimestamp
+    const jsDate = new Date(convertedTimestamp)
 
     return done(null, jsDate)
   } catch (e) {
@@ -68,29 +74,34 @@ const from = (fromDate, done = defaultCallback) => {
   }
 }
 
+/**
+ * Convert to a spreadsheet-formatted date from a corresponding parsable date
+ * @param {date|string|number} toDate - A valid JS date object or parsable string/number
+ * @param {nodeCallback} [done] - Optional callback, allows async/promisify
+ * @returns {string}
+ * @throws Will throw an error if the input is invalid, or a bad callback is received
+ */
 const to = (toDate, done = defaultCallback) => {
   if (!done || typeof done !== 'function') {
     throw new CallbackError()
   }
 
-  if (!toDate) {
-    return done(new ArgTypeError('date or date string'))
+  if (!toDate && toDate !== 0) {
+    return done(new ArgTypeError(dateOrDateString))
   }
 
   try {
-    const toDateAsTimeStamp = typeof toDate === 'object' && !toDate.getTime ? toDate.getTime() : new Date(toDate).getTime()
+    const toTimestamp =
+      typeof toDate === 'object' && !toDate.getTime
+        ? toDate.getTime()
+        : new Date(toDate).getTime()
 
-    if (!toDateAsTimeStamp || Number.isNaN(toDateAsTimeStamp)) {
-      throw new ArgTypeError('date or date string')
+    if (!toTimestamp || Number.isNaN(toTimestamp)) {
+      throw new ArgTypeError(dateOrDateString)
     }
 
-    const secondsInDay = 24 * 60 * 60
-    const excelEpoch = new Date(Date.UTC(1899, 11, 31))
-    const excelEpochAsUnixTs = excelEpoch.getTime()
-    const missingLeapYearDay = secondsInDay * 1000
-    const delta = excelEpochAsUnixTs - missingLeapYearDay // assumes Google format <60
-    const adjustedTs = toDateAsTimeStamp - delta
-    const sheetDate = adjustedTs / secondsInDay / 1000
+    const convertedTimestamp = toTimestamp - adjustedSheetEpicTimestamp
+    const sheetDate = convertedTimestamp / secondsInDay / 1000
 
     return done(null, `${sheetDate}`)
   } catch (e) {

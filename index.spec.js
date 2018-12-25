@@ -1,11 +1,7 @@
 const assert = require('assert')
-const {
-  ArgTypeError,
-  CallbackError,
-} = require('./errors')
+const { ArgTypeError, CallbackError } = require('./errors')
 const excelDate = require('./index')
 const { from, to } = excelDate
-
 
 describe('from', () => {
   it('should return the correct date', () => {
@@ -19,8 +15,14 @@ describe('from', () => {
     assert.equal(from('2').toISOString(), '1900-01-01T00:00:00.000Z')
     assert.equal(from(4242.4242).toISOString(), '1911-08-12T10:10:50.880Z')
     assert.equal(from('4242.4242').toISOString(), '1911-08-12T10:10:50.880Z')
-    assert.equal(from(42738.22626859954).toISOString(), '2017-01-03T05:25:49.607Z')
-    assert.equal(from('42738.22626859954').toISOString(), '2017-01-03T05:25:49.607Z')
+    assert.equal(
+      from(42738.22626859954).toISOString(),
+      '2017-01-03T05:25:49.607Z'
+    )
+    assert.equal(
+      from('42738.22626859954').toISOString(),
+      '2017-01-03T05:25:49.607Z'
+    )
   })
 
   it('should return the correct date via callbacks', () => {
@@ -91,16 +93,23 @@ describe('from', () => {
   })
 })
 
-
-
 describe('to', () => {
-  it('should return the correct date', () => {
+  it('should return the correct date when passed an ISO string', () => {
     assert.equal(to('2016-05-20T00:00:00.000Z'), '42510')
     assert.equal(to('1899-12-30T00:00:00.000Z'), '0')
     assert.equal(to('1899-12-31T00:00:00.000Z'), '1')
     assert.equal(to('1900-01-01T00:00:00.000Z'), '2')
     assert.equal(to('1911-08-12T10:10:50.880Z'), '4242.4242')
     assert.equal(to('2017-01-03T05:25:49.607Z'), '42738.22626859954')
+  })
+
+  it('should return the correct date when passed an object', () => {
+    assert.equal(to(new Date('2016-05-20T00:00:00.000Z')), '42510')
+    assert.equal(to(new Date('1899-12-30T00:00:00.000Z')), '0')
+    assert.equal(to(new Date('1899-12-31T00:00:00.000Z')), '1')
+    assert.equal(to(new Date('1900-01-01T00:00:00.000Z')), '2')
+    assert.equal(to(new Date('1911-08-12T10:10:50.880Z')), '4242.4242')
+    assert.equal(to(new Date('2017-01-03T05:25:49.607Z')), '42738.22626859954')
   })
 
   it('should return the correct date via callbacks', () => {

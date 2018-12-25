@@ -1,4 +1,4 @@
-// errors inspired by node internal errors, located here (2018-12-18):
+// errors inspired by node internal errors, located here (as of 2018-12-18):
 // https://raw.githubusercontent.com/nodejs/node/master/lib/internal/errors.js
 
 class ArgTypeError extends TypeError {

@@ -15,7 +15,6 @@ try {
   console.error(`[Caught Error]: ${err}`)
 }
 
-
 excelDate.from('1', (err, res) => {
   if (!err) console.log(res)
   else console.error(`[Caught Error]: ${err}`)
@@ -26,16 +25,11 @@ excelDate.from('60', (err, res) => {
   else console.error(`[Caught Error]: ${err}`)
 })
 
-
-
 excelDate
   .fromAsync(42510)
   .then(r => r.toISOString())
   .then(console.log)
   .catch(err => console.error(`[Caught Error]: ${err}`))
-
-
-
 
 // const fromAwait = async () => {
 //   let result
