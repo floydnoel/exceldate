@@ -11,7 +11,7 @@
   },
   "scripts": {
     "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"{index.js,index.spec.js,playground.js}\"",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "devDependencies": {
     "jest": "^23.6.0",

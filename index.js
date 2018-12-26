@@ -3,7 +3,6 @@
  * @module exceldate
  */
 const { ArgTypeError, CallbackError } = require('./errors')
-const promisify = require('util').promisify
 
 // constants
 const numberOrNumberString = 'number or number string'
@@ -16,7 +15,6 @@ const sheetEpochTimestamp = new Date('1899-12-30').getTime()
 // todo: add link/more
 // Excel thinks there's a leap year in 1900, but there isn't.
 // Also Excel doesn't allow negative values.
-
 
 /**
  * Callback definition (standard Node-style error-first callback)
@@ -108,6 +106,4 @@ const to = (toDate, done = defaultCallback) => {
 module.exports = {
   from,
   to,
-  fromAsync: promisify(from),
-  toAsync: promisify(to),
 }
