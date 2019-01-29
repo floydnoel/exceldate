@@ -9,56 +9,52 @@ const numberOrNumberString = 'number or number string'
 const dateOrDateString = 'date or date string'
 const msInDay = 24 * 60 * 60 * 1000
 
-// start date of the spreadsheet epic
-// this assumes to use the Google format for values <61? todo: recheck
+// Start of the spreadsheet epic as a timestamp
+// Technically this can be one of two values. This is the one Google chose.
 const sheetEpochTimestamp = new Date('1899-12-30').getTime()
-// todo: add link/more
-// Excel thinks there's a leap year in 1900, but there isn't.
-// Also Excel doesn't allow negative values.
 
 /**
- * Callback definition (standard Node-style error-first callback)
- * @callback nodeCallback
- * @param {(error|undefined)} err - An error if one is encountered, undefined otherwise
- * @param {*} res - The successful result if processed
+ * Node.js-style error-first callback.
+ * @callback errorFirstCallback
+ * @param {(Error|null|undefined)} err - An error if one is encountered, null/undefined otherwise.
+ * @param {*} res - The successful result if processed.
  */
 
-//todo: double check
 /**
- * A default callback for when none is provided. Returns the result or throws any error
- * @param {(Error|undefined)} err - A JS Error object or undefined if no error
- * @param {*} res - The successful return data, assumed undefined if any error
- * @returns {*} - Will be the same as the res param
- * @throws Will throw an error if one is provided as the first/err param
+ * A callback for when none is provided, just to return the result or throw any error.
+ * @param {(Error|null|undefined)} err - A JavaScript Error object or null/undefined.
+ * @param {*} res - The successful return data, assumed undefined if any error.
+ * @returns {*} Will be whatever is passed as the res param.
+ * @throws Will throw an error if one is provided as the first/err param.
  */
-const defaultCallback = (err, res) => {
+const closer = (err, res) => {
   if (err) throw err
   return res
 }
 
 /**
- * Convert from a spreadsheet-formatted date to a corresponding JS date object
- * @param {(number|string)} fromDate - A spreadsheet-formatted date number
- * @param {nodeCallback} [done] - Optional callback, allows async/promisify
+ * Convert from a spreadsheet-formatted date to a corresponding JavaScript Date object.
+ * @param {(number|string)} fromValue - A spreadsheet-formatted date (a number, optionally contained in a string).
+ * @param {errorFirstCallback} [done] - Optional callback, enables async/promisify.
  * @returns {date}
- * @throws Will throw an error if the input is invalid, or a bad callback is received
+ * @throws Will throw an error if the input is invalid, or a bad callback is received.
  */
-const from = (fromDate, done = defaultCallback) => {
+module.exports.from = (fromValue, done = closer) => {
   if (!done || typeof done !== 'function') {
     throw new CallbackError()
   }
 
-  if (!fromDate && fromDate !== 0) {
+  if (!fromValue && fromValue !== 0) {
     return done(new ArgTypeError(numberOrNumberString))
   }
 
   try {
-    const fromDateNumber = Number.parseFloat(fromDate, 10)
-    if (Number.isNaN(fromDateNumber)) {
+    const fromValueNumber = Number.parseFloat(fromValue, 10)
+    if (Number.isNaN(fromValueNumber)) {
       return done(new ArgTypeError(numberOrNumberString))
     }
 
-    const fromTimestamp = fromDateNumber * msInDay
+    const fromTimestamp = fromValueNumber * msInDay
     const jsTimestamp = fromTimestamp + sheetEpochTimestamp
     const jsDate = new Date(jsTimestamp)
 
@@ -69,28 +65,25 @@ const from = (fromDate, done = defaultCallback) => {
 }
 
 /**
- * Convert to a spreadsheet-formatted date from a corresponding parsable date
- * @param {date|string|number} toDate - A valid JS date object or parsable string/number
- * @param {nodeCallback} [done] - Optional callback, allows async/promisify
+ * Convert to a spreadsheet-formatted date from a corresponding parsable date.
+ * @param {date|string|number} toValue - A valid JavaScript Date object or a date-parsable string or number.
+ * @param {errorFirstCallback} [done] - Optional callback, enables async/promisify.
  * @returns {string}
- * @throws Will throw an error if the input is invalid, or a bad callback is received
+ * @throws Will throw an error if the input is invalid, or a bad callback is received.
  */
-const to = (toDate, done = defaultCallback) => {
+module.exports.to = (toValue, done = closer) => {
   if (!done || typeof done !== 'function') {
     throw new CallbackError()
   }
 
-  if (!toDate && toDate !== 0) {
+  if (!toValue && toValue !== 0) {
     return done(new ArgTypeError(dateOrDateString))
   }
 
   try {
-    const toTimestamp =
-      typeof toDate === 'object' && !toDate.getTime
-        ? toDate.getTime()
-        : new Date(toDate).getTime()
+    const toTimestamp = new Date(toValue).getTime()
 
-    if (!toTimestamp || Number.isNaN(toTimestamp)) {
+    if (Number.isNaN(toTimestamp)) {
       throw new ArgTypeError(dateOrDateString)
     }
 
@@ -101,9 +94,4 @@ const to = (toDate, done = defaultCallback) => {
   } catch (e) {
     return done(e)
   }
-}
-
-module.exports = {
-  from,
-  to,
 }

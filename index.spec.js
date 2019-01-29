@@ -59,7 +59,7 @@ describe('from', () => {
     from(42738.22626859954, (err, res) => {
       assert.equal(res.toISOString(), '2017-01-03T05:25:49.607Z')
     })
-    from('42738.22626859954', (err, res) => {
+    from('42738.22626859954', function(err, res) {
       assert.equal(res.toISOString(), '2017-01-03T05:25:49.607Z')
     })
   })
@@ -70,7 +70,7 @@ describe('from', () => {
     expect(() => from()).toThrow()
   })
 
-  it('should return errors for invalid inputs via error parameter of a callback', () => {
+  it('should return errors on invalid input via error parameter of a callback when present', () => {
     from('foo', (err, res) => {
       assert.equal(null, res)
       assert.equal(err.toString(), new ArgTypeError().toString())
@@ -83,7 +83,7 @@ describe('from', () => {
 
     from(null, (err, res) => {
       assert.equal(null, res)
-      assert.equal(err.toString(), new ArgTypeError())
+      assert.equal(err.toString(), new ArgTypeError().toString())
     })
   })
 
@@ -139,7 +139,7 @@ describe('to', () => {
     expect(() => to()).toThrow()
   })
 
-  it('should return errors for invalid inputs via error parameter of a callback', () => {
+  it('should return errors for invalid input via error parameter of a callback when present', () => {
     to('foo', (err, res) => {
       assert.equal(null, res)
       assert.equal(err.toString(), new ArgTypeError().toString())
