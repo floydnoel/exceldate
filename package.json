@@ -1,7 +1,7 @@
 {
   "name": "exceldate",
   "version": "2.0.0",
-  "description": "Node.js module to convert between excel timestamps and JS dates.",
+  "description": "Node.js module to convert between spreadsheet and JavaScript date formats",
   "author": "Floyd Noel",
   "license": "Unlicense",
   "main": "index",
