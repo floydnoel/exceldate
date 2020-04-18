@@ -1,5 +1,7 @@
 # exceldate
 
+[![Codeship Status for floydnoel/exceldate](https://app.codeship.com/projects/362f08b0-c04a-0136-91bf-5a413c092475/status?branch=master)](https://app.codeship.com/projects/313502)
+
 A Node.js package to convert excel timestamps to JS dates. A simple utility function with no dependencies, exceldate accepts a number directly or stored in a string.
 
 ## Installation
