@@ -2,7 +2,7 @@
 
 [![Codeship Status for floydnoel/exceldate](https://app.codeship.com/projects/362f08b0-c04a-0136-91bf-5a413c092475/status?branch=master)](https://app.codeship.com/projects/313502)
 
-A Node.js package to convert excel timestamps to JS dates. A simple utility function with no dependencies, exceldate accepts a number directly or stored in a string.
+A Node.js package to convert excel timestamps to JS dates. A simple, well-tested utility function with no dependencies, `exceldate` accepts a number directly or stored in a string.
 
 ## Installation
 
@@ -43,11 +43,3 @@ To test run `yarn test` or `npm test`
 
 This is free and unencumbered software released "as is" into the public domain, without warranty of any kind.
 For more information, please refer to the LICENSE file and <https://unlicense.org>
-
-## Changelog:
-
-- 0.0.3: first stable version
-- 1.0.0: support callback style interface, remove semicolons, updated test framework, updated README
-- 1.0.1: remove old code comment
-- 1.0.2: update README
-- 1.1.0: added testing dev dependency, integrate eslint & prettier, added JSDoc types, friendlier error messages, invalid inputs will now throw an error, and README updates
