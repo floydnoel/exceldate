@@ -1,0 +1,12 @@
+{
+  "files": ["index.js"],
+
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types",
+    "strict": false,
+    "moduleResolution": "node"
+  }
+}

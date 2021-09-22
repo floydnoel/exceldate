@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+### Changed
+
+- Return value type added to JSDoc
+- Less direct export to ease type generation
+
+### Added
+
+- TypeScript types added to `/types` directory
+- TypeScript config file added for type generation
+- `typegen` run script added to generate types
+
 ## 1.1.1
 
 ### Changed

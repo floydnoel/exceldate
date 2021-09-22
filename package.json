@@ -9,10 +9,12 @@
     "url": "https://github.com/floydnoel/exceldate"
   },
   "version": "1.1.1",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint . --fix",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "typegen": "npx typescript"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

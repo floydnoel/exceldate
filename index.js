@@ -8,8 +8,9 @@
  * Takes an Excel timestamp (as a number or string) and returns a corresponding Date object
  * @param {string|number} excelDate
  * @param {nodeCallback} [done]
+ * @returns {Date|nodeCallback} Returns a Date or the callback if provided
  */
-module.exports = (
+const transform = (
   excelDate,
   done = (err, res) => {
     if (err) throw err
@@ -43,3 +44,5 @@ module.exports = (
     return done(e)
   }
 }
+
+module.exports = transform
