@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.1
+
+### Changed
+
+- Packages updated
+- README updated
+- TypeScript type generation improved
+
+### Added
+
+- GitHub CodeQL Analysis enabled
+
 ## 1.2.0
 
 ### Changed
