@@ -5,6 +5,7 @@
 ### Changed
 
 - Fixed inputs of `0`
+- Updated formatting to include semicolon
 
 ### Added
 
