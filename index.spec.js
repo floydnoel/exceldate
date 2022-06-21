@@ -5,6 +5,7 @@ describe('exceldate', () => {
   it('should return the correct date', () => {
     assert.equal(exceldate(42510).toISOString(), '2016-05-20T00:00:00.000Z');
     assert.equal(exceldate('42510').toISOString(), '2016-05-20T00:00:00.000Z');
+    assert.equal(exceldate(0).toISOString(), '1899-12-30T00:00:00.000Z');
     assert.equal(exceldate(1).toISOString(), '1899-12-31T00:00:00.000Z');
     assert.equal(exceldate('1').toISOString(), '1899-12-31T00:00:00.000Z');
     assert.equal(exceldate(2).toISOString(), '1900-01-01T00:00:00.000Z');
