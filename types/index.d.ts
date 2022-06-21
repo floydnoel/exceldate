@@ -1,4 +1,4 @@
-export = transform
+export = transform;
 /**
  * @callback nodeCallback
  * @param {Error} [err]
@@ -13,8 +13,8 @@ export = transform
 declare function transform(
   excelDate: string | number,
   done?: nodeCallback
-): Date | nodeCallback
+): Date | nodeCallback;
 declare namespace transform {
-  export { nodeCallback }
+  export { nodeCallback };
 }
-type nodeCallback = (err?: Error, res?: Date) => any
+type nodeCallback = (err?: Error, res?: Date) => any;
