@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.2
+
+### Changed
+
+- Fixed inputs of `0`
+
+### Added
+
+- Test for zero as input
+
 ## 1.2.1
 
 ### Changed
