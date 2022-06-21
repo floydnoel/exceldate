@@ -14,7 +14,7 @@
     "test": "jest",
     "lint": "eslint . --fix",
     "format": "prettier . --write",
-    "typegen": "npx tsc"
+    "typegen": "tsc"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
