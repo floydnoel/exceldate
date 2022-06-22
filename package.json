@@ -8,13 +8,13 @@
     "type": "git",
     "url": "https://github.com/floydnoel/exceldate"
   },
-  "version": "1.2.2",
+  "version": "1.2.3",
   "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint . --fix",
     "format": "prettier . --write",
-    "typegen": "npx tsc"
+    "typegen": "tsc"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

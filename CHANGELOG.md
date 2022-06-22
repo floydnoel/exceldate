@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.3
+
+### Changed
+
+- Update tsc invocation
+- Regenerated types
+
+### Added
+
+- Prettier ignore file added with `types` entry for tsc-generated typescript defintions
+
 ## 1.2.2
 
 ### Changed

@@ -10,11 +10,8 @@ export = transform;
  * @param {nodeCallback} [done]
  * @returns {Date|nodeCallback} Returns a Date or the callback if provided
  */
-declare function transform(
-  excelDate: string | number,
-  done?: nodeCallback
-): Date | nodeCallback;
+declare function transform(excelDate: string | number, done?: nodeCallback): Date | nodeCallback;
 declare namespace transform {
-  export { nodeCallback };
+    export { nodeCallback };
 }
 type nodeCallback = (err?: Error, res?: Date) => any;
