@@ -94,4 +94,4 @@ module.exports.to = (toValue, done = closer) => {
   } catch (e) {
     return done(e)
   }
-}
+};
