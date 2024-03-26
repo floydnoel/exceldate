@@ -1,5 +1,7 @@
 # Changelog
 
+# TODO: 2.0.0 Now supports two-way conversions! New API, improved package setup, JSDocs, better README, and other great enhancements.
+
 ## 1.2.3
 
 ### Changed

@@ -2,16 +2,14 @@
  * exceldate
  * @module exceldate
  */
-const { ArgTypeError, CallbackError } = require('./errors')
+const { ArgError } = require('./errors');
 
 // constants
-const numberOrNumberString = 'number or number string'
-const dateOrDateString = 'date or date string'
-const msInDay = 24 * 60 * 60 * 1000
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
 // Start of the spreadsheet epic as a timestamp
 // Technically this can be one of two values. This is the one Google chose.
-const sheetEpochTimestamp = new Date('1899-12-30').getTime()
+const sheetEpochTimestamp = new Date('1899-12-30').getTime();
 
 /**
  * Node.js-style error-first callback.
@@ -21,16 +19,16 @@ const sheetEpochTimestamp = new Date('1899-12-30').getTime()
  */
 
 /**
- * A callback for when none is provided, just to return the result or throw any error.
+ * A default callback for when none is provided, just to return the result or throw any error.
  * @param {(Error|null|undefined)} err - A JavaScript Error object or null/undefined.
  * @param {*} res - The successful return data, assumed undefined if any error.
  * @returns {*} Will be whatever is passed as the res param.
  * @throws Will throw an error if one is provided as the first/err param.
  */
-const closer = (err, res) => {
-  if (err) throw err
-  return res
-}
+const defaultDone = (err, res) => {
+  if (err) throw err;
+  return res;
+};
 
 /**
  * Convert from a spreadsheet-formatted date to a corresponding JavaScript Date object.
@@ -39,30 +37,30 @@ const closer = (err, res) => {
  * @returns {date}
  * @throws Will throw an error if the input is invalid, or a bad callback is received.
  */
-module.exports.from = (fromValue, done = closer) => {
-  if (!done || typeof done !== 'function') {
-    throw new CallbackError()
-  }
-
-  if (!fromValue && fromValue !== 0) {
-    return done(new ArgTypeError(numberOrNumberString))
-  }
-
+module.exports.from = (fromValue, done = defaultDone) => {
   try {
-    const fromValueNumber = Number.parseFloat(fromValue, 10)
-    if (Number.isNaN(fromValueNumber)) {
-      return done(new ArgTypeError(numberOrNumberString))
+    if (!done || typeof done !== 'function') {
+      throw new ArgError('callback was not a valid function');
     }
 
-    const fromTimestamp = fromValueNumber * msInDay
-    const jsTimestamp = fromTimestamp + sheetEpochTimestamp
-    const jsDate = new Date(jsTimestamp)
+    if (!fromValue && fromValue !== 0) {
+      return done(new ArgError('no input'));
+    }
 
-    return done(null, jsDate)
-  } catch (e) {
-    return done(e)
+    const fromValueNumber = Number.parseFloat(fromValue, 10);
+    if (Number.isNaN(fromValueNumber)) {
+      return done(new ArgError('not a parseable number'));
+    }
+
+    const fromTimestamp = fromValueNumber * MS_IN_DAY;
+    const jsTimestamp = fromTimestamp + sheetEpochTimestamp;
+    const jsDate = new Date(jsTimestamp);
+
+    return done(null, jsDate);
+  } catch (err) {
+    return done(err);
   }
-}
+};
 
 /**
  * Convert to a spreadsheet-formatted date from a corresponding parsable date.
@@ -71,27 +69,27 @@ module.exports.from = (fromValue, done = closer) => {
  * @returns {string}
  * @throws Will throw an error if the input is invalid, or a bad callback is received.
  */
-module.exports.to = (toValue, done = closer) => {
-  if (!done || typeof done !== 'function') {
-    throw new CallbackError()
-  }
-
-  if (!toValue && toValue !== 0) {
-    return done(new ArgTypeError(dateOrDateString))
-  }
-
+module.exports.to = (toValue, done = defaultDone) => {
   try {
-    const toTimestamp = new Date(toValue).getTime()
-
-    if (Number.isNaN(toTimestamp)) {
-      throw new ArgTypeError(dateOrDateString)
+    if (!done || typeof done !== 'function') {
+      throw new ArgError('callback was not a valid function');
     }
 
-    const sheetTimestamp = toTimestamp - sheetEpochTimestamp
-    const sheetDate = sheetTimestamp / msInDay
+    if (!toValue && toValue !== 0) {
+      return done(new ArgError('no input'));
+    }
 
-    return done(null, `${sheetDate}`)
-  } catch (e) {
-    return done(e)
+    const toTimestamp = new Date(toValue).getTime();
+
+    if (Number.isNaN(toTimestamp)) {
+      throw new ArgError('not a parseable date');
+    }
+
+    const sheetTimestamp = toTimestamp - sheetEpochTimestamp;
+    const sheetDate = sheetTimestamp / MS_IN_DAY;
+
+    return done(null, `${sheetDate}`);
+  } catch (err) {
+    return done(err);
   }
 };

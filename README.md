@@ -4,19 +4,21 @@
 
 `exceldate` is a simple date utility package which converts excel timestamps to JS dates. It was built from [knowledge gathered](https://github.com/floydnoel/exceldate/blob/master/index.js#L31) in research of "how to convert spreadsheet dates to JavaScript dates?" It features a complete set of tests, no dependencies (except for testing), available types (via JSDoc _and_ TypeScript definitions), and a permissive license. This library is maintained and improving since 2018. Feature requests or contributions are always welcome!
 
-
 ## How it works
-Spreadsheet software such as Microsoft Excel have a specialized internal date format. A number (integer or float) represents a date, and optionally, a time. An integer represents a date without a time. Floats are used for a date with a time. That number represents the number of days since December 31, 1899 (in the case of MS Excel) or December 30, 1899 (for Google Sheets).
 
+Spreadsheet software such as Microsoft Excel have a specialized internal date format. A number (integer or float) represents a date, and optionally, a time. An integer represents a date without a time. Floats are used for a date with a time. That number represents the number of days since December 31, 1899 (in the case of MS Excel) or December 30, 1899 (for Google Sheets).
 
 Accepts a spreadsheet-formatted date as a number or stored in a string.
 
 ## Todo
+
 - dist
 - add spreadsheet examples to test/playground
 
 ## Usage
+
 Install it in your project
+
 ```sh
 yarn add exceldate
 # or
@@ -24,39 +26,43 @@ npm install exceldate
 ```
 
 Import and Use it:
+
 ```js
-const excelDate = require('exceldate')
-const { from, to } = require('exceldate')
-const { from, to } = require('exceldate/async')
+const excelDate = require('exceldate');
+const { from, to } = require('exceldate');
+const { from, to } = require('exceldate/async');
 
-import { from, to } from 'exceldate/async'
-import excelDate from 'exceldate'
+import { from, to } from 'exceldate/async';
+import excelDate from 'exceldate';
 
-const jsDate = excelDate.from(4242)
-jsDate.getFullYear() // 1911
-excelDate.from('1').toISOString() // 1899-12-31T00:00:00.000Z
+const jsDate = excelDate.from(4242);
+jsDate.getFullYear(); // 1911
+excelDate.from('1').toISOString(); // 1899-12-31T00:00:00.000Z
 ```
 
 Use it with a Promise:
+
 ```js
 excelDate
   .fromAsync(42510)
-  .then(res => res.toISOString())
+  .then((res) => res.toISOString())
   .then(console.log) // 2016-05-20T00:00:00.000Z
-  .catch(err => console.error(`[Error]: ${err}`))
+  .catch((err) => console.error(`[Error]: ${err}`));
 ```
 
 You can use it with async/await:
+
 ```js
 const fromAwait = async () => {
-  let result = await excelDate.fromAsync(424242)
-  console.log(result) // 3061-07-13T00:00:00.000Z
-}
+  let result = await excelDate.fromAsync(424242);
+  console.log(result); // 3061-07-13T00:00:00.000Z
+};
 
-fromAwait()
+fromAwait();
 ```
 
 You could even use it with a callback if you like:
+
 ```js
 excelDate.from('9000', (err, res) => {
   if (!err) console.log(res) // 1924-08-21T00:00:00.000Z
@@ -89,3 +95,4 @@ Invoke `node playground` to run, change values to see results.
 This is free and unencumbered software released "as is" into the public domain, without warranty of any kind.
 For more information, please refer to the LICENSE file and <https://unlicense.org>
 
+```
